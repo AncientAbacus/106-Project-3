@@ -1,0 +1,266 @@
+html {
+  --color-accent: oklch(90% 100% 180);
+  --border-color: oklch(50% 10% 200 / 40%);
+  color-scheme: light dark
+}
+
+.color-scheme {
+  position: absolute;
+  top: -1rem;          
+  right: 1rem;
+  padding: 1em;        
+  font-size: 80%;     
+  font-family: inherit;
+}
+
+.color-scheme select {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+body {
+  font: 100%/1.5 system-ui;
+  max-width: 100ch;
+  margin-inline: auto;
+  padding: 1em;
+  box-sizing: border-box;
+  accent-color: var(--color-accent);
+}
+
+nav ul {
+  display: contents;
+}
+
+nav li {
+  display: contents;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0em;
+  margin-bottom: 0em;
+  border-bottom: 1px solid var(--border-color);
+  }
+
+nav a {
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 0em;
+}
+
+nav a:hover {
+  font-weight: bold;
+  border-bottom: 0.4em solid var(--color-accent);
+  padding-bottom: 0em;
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
+}
+
+nav a.current {
+  font-weight: bold;
+  border-bottom: 0.4em solid oklch(80% 3% 200);
+  padding-bottom: 0em;
+}
+
+form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1em;
+}
+
+label {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+button {
+  grid-column: 1 / -1;
+}
+
+.projects{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  grid-template-rows: subgrid;
+  grid-row: span 3;
+  gap: 1em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+  margin: 0.5em 0;
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 400%;
+}
+
+h2 {
+  font-size: 200%;
+}
+
+h3 {
+  font-size: 150%;
+}
+h4 {
+  font-size: 125%;
+}
+h5 {
+  font-size: 110%;
+}
+h6 {
+  font-size: 100%;
+}
+
+.resume {
+  line-height: 1.5;
+  max-width: 800px;
+  margin: 2em auto;
+  padding: 1em;
+}
+
+.resume h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid #007BFF;
+  padding-bottom: 0.2em;
+  margin-bottom: 1em;
+}
+
+.resume h3 {
+  font-size: 1.5rem;
+  color: #0056b3;
+  margin: 0.5em 0;
+}
+
+.resume p,
+.resume ul {
+  margin: 0.5em 0;
+}
+
+.resume ul {
+  list-style-type: disc;
+  padding-left: 2em;
+}
+
+.resume li {
+  margin-bottom: 0.5em;
+}
+
+.resume time {
+  font-style: italic;
+}
+
+.resume strong {
+  font-weight: bold;
+}
+
+.resume section {
+  margin-bottom: 2em;
+}
+
+.resume article {
+  margin-bottom: 1.5em;
+}
+
+.resume header {
+  margin-bottom: 0.5em;
+}
+
+.project-image {
+  width: 300px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+
+  overflow: visible;
+}
+
+.container {
+  display: flex; /* Aligns pie chart and legend side by side */
+  align-items: center; /* Vertically centers items */
+  gap: 1.5em; /* Space between pie chart and legend */
+  justify-content: center; /* Centers content horizontally */
+  padding: 1em;
+}
+
+svg {
+  max-width: 200px; /* Limits the pie chart size */
+  height: auto;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fill, minmax(9em, 1fr)); /* Responsive 2x3 grid */
+  grid-auto-rows: auto;
+  gap: 0.5em; /* Space between legend items */
+  list-style: none;
+  padding: 1em;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  width: fit-content;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-right: 3em;
+}
+
+.legend-item .swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background-color: var(--color);
+  border-radius: 50%;
+}
+
+.searchBar {
+  width: 100%; /* Full width */
+  padding: 10px; /* Padding inside the input */
+  font-size: 16px; /* Font size */
+  border: 1px solid #ccc; /* Border */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  margin: 20px 0; /* Margin around the input */
+}
+
+&:has(path:hover) {
+  path:not(:hover) {
+    opacity: 0.5;
+  }
+  path {
+    transition: 300ms;
+    cursor: pointer;
+  }
+}
+
+
+
+.selected {
+  --color: oklch(60% 45% 0) !important;
+
+  &:is(path) {
+    fill: var(--color);
+  }
+}
+
+.legend-item.selected .swatch {
+  --color: oklch(60% 45% 0) !important;
+
+  &:is(path) {
+    fill: var(--color);
+  }
+}
+
+
