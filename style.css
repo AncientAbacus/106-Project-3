@@ -117,60 +117,6 @@ h6 {
   font-size: 100%;
 }
 
-.resume {
-  line-height: 1.5;
-  max-width: 800px;
-  margin: 2em auto;
-  padding: 1em;
-}
-
-.resume h2 {
-  font-size: 2rem;
-  border-bottom: 2px solid #007BFF;
-  padding-bottom: 0.2em;
-  margin-bottom: 1em;
-}
-
-.resume h3 {
-  font-size: 1.5rem;
-  color: #0056b3;
-  margin: 0.5em 0;
-}
-
-.resume p,
-.resume ul {
-  margin: 0.5em 0;
-}
-
-.resume ul {
-  list-style-type: disc;
-  padding-left: 2em;
-}
-
-.resume li {
-  margin-bottom: 0.5em;
-}
-
-.resume time {
-  font-style: italic;
-}
-
-.resume strong {
-  font-weight: bold;
-}
-
-.resume section {
-  margin-bottom: 2em;
-}
-
-.resume article {
-  margin-bottom: 1.5em;
-}
-
-.resume header {
-  margin-bottom: 0.5em;
-}
-
 .project-image {
   width: 300px; /* Adjust the width as needed */
   height: auto; /* Maintain aspect ratio */
@@ -290,22 +236,23 @@ h6 {
 #stats dl {
   display: grid;
   grid-template-columns: repeat(9, 1fr); /* Nine equal-sized columns */
-  gap: 1rem; /* Add gap between columns */
+  column-gap: 2.3em; /* Space between columns */
+  row-gap: 0em; /* Space between rows */
+  align-items: center;
 }
 
 #stats dt {
   grid-row: 1; /* Place all dt elements in the first row */
-  text-align: center;
+  text-align: left;
   font-size: larger;
   font-weight: bold; /* Make titles bold */
   color: cadetblue;
-  padding-right: 1em;
 }
 
 #stats dd {
   grid-row: 2; /* Place all dd elements in the second row */
-  text-align: center;
-  margin: 0.3rem;
+  text-align: left;
+  margin-left: 0.1rem;
   font-size: x-large;
   font-weight: 600;
 }

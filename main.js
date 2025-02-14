@@ -1,4 +1,4 @@
-// set up global constants and variables
+// set up global constants and variables -----------------------------------------------------------
 let data = [];
 let commits = [];
 let xScale, yScale;
@@ -20,9 +20,9 @@ const customColors = [
 
 const colorScale = d3.scaleOrdinal()
     .domain(d3.range(customColors.length)) // Assigns colors to categories
-    .range(customColors.reverse());
+    .range(customColors.reverse()); // reverse because otherwise the x axis displays backwards
 
-// load data using d3's csv method
+// load data-----------------------------------------------------------------------------------------
 async function loadData() {
     data = await d3.csv('data/viz_cases.csv', (row) => ({
       ...row,
@@ -36,8 +36,6 @@ async function loadData() {
 
     }));
 
-   
-
     console.log(data);
     displayStats();
     createStackedBar();
@@ -49,25 +47,25 @@ document.addEventListener('DOMContentLoaded', async () => {
 await loadData();
 });
 
-// display stats
+// display stats ------------------------------------------------------------------------------------
 function displayStats() {  
-// Create the dl element
-const dl = d3.select('#stats').append('dl').attr('class', 'stats');
+    // Create the dl element
+    const dl = d3.select('#stats').append('dl').attr('class', 'stats');
 
-// add total observations
-dl.append('dt').html('Total');
-dl.append('dd').text(data.length);
+    // add total observations
+    dl.append('dt').html('Total');
+    dl.append('dd').text(data.length);
 
-// Add total cases by age bin
-const ageBins = d3.group(data, d => d.agebin);
-const reversedAgeBins = Array.from(ageBins).reverse();
-reversedAgeBins.forEach(([key, value]) => {
-    dl.append('dt').text(`${key}`);
-    dl.append('dd').text(value.length);
-});
+    // Add total cases by age bin
+    const ageBins = d3.group(data, d => d.agebin);
+    const sortedAgeBins = Array.from(ageBins).sort((a, b) => d3.ascending(Number(a[0].split('-')[0]), Number(b[0].split('-')[0])));
+    sortedAgeBins.forEach(([key, value]) => {
+        dl.append('dt').text(`${key}`);
+        dl.append('dd').text(value.length);
+    });
 }
 
-// create stacked bar
+// create stacked bar --------------------------------------------------------------------------------
 function createStackedBar() {
     const width = 1000;
     const height = 600;
@@ -185,7 +183,7 @@ function createStackedBar() {
         .attr('dy', '0.32em')
         .text(d => d);
     
-        // Add animation on load
+    // Add animation on load
     bars.attr('y', height - margin.bottom)
         .attr('height', 0)
         .transition()
@@ -195,7 +193,6 @@ function createStackedBar() {
 
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-
 }
 
     
