@@ -191,7 +191,7 @@ h6 {
   padding: 1em;
 }
 
-svg {
+#projects-pie-plot {
   max-width: 200px; /* Limits the pie chart size */
   height: auto;
 }
@@ -279,4 +279,42 @@ svg {
   height: auto;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+#stats {
+  display: flex;
+  max-width: fit-content;
+}
+
+#stats dl {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr); /* Nine equal-sized columns */
+  gap: 1rem; /* Add gap between columns */
+}
+
+#stats dt {
+  grid-row: 1; /* Place all dt elements in the first row */
+  text-align: center;
+  font-size: larger;
+  font-weight: bold; /* Make titles bold */
+  color: cadetblue;
+  padding-right: 1em;
+}
+
+#stats dd {
+  grid-row: 2; /* Place all dd elements in the second row */
+  text-align: center;
+  margin: 0.3rem;
+  font-size: x-large;
+  font-weight: 600;
+}
+
+/* legend rectangle */
+.legend-rect{
+  border-radius: 25% 10%;
+}
+
+.bar:hover {
+  cursor: pointer;
 }

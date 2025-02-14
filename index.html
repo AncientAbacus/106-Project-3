@@ -1,43 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
-    <link href="../style.css" rel="stylesheet">
-    <script src="../global.js" type="module"></script>
-    <script src="./projects.js" type="module"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <script type="module" src="main.js"></script>
+  <script type="module" src="global.js"></script>
+  <link rel="stylesheet" href="style.css">
+
+  <title>Project 3 Visualization</title>
 </head>
 <body>
-  <header> 
-    <h1>Project 3</h1>
-    <div class="container">
-      <svg id="projects-pie-plot" viewBox="-50 -50 100 100">
-        <path d="M -50 0 A 50 50 0 0 1 50 0 A 50 50 0 0 1 -50 0" fill="red" />
-      </svg>
-      <ul class="legend">
-      </ul>
-    </div>
-    <input
-      class="searchBar"
-      type="search"
-      aria-label="Search projects"
-      placeholder="🔍 Search EDA graphs…"
-    />
-    <section class="eda-container">
-      <h2>Exploratory Data Analysis (EDA) Graphs</h2>
-      <div class="eda-images">
-          <img src="EDA_images/EBL across departments.png" alt="EDA Image 1" class="eda-image">
-          <img src="EDA_images/EDA_blood_loss.png" alt="EDA Image 2" class="eda-image">
-          <img src="EDA_images/image-1.png" alt="EDA Image 3" class="eda-image">
-          <img src="EDA_images/image-2.png" alt="EDA Image 4" class="eda-image">
-          <img src="EDA_images/image.png" alt="EDA Image 5" class="eda-image">
-          <img src="EDA_images/Percentage of Deaths across age.png" alt="EDA Image 6" class="eda-image">
-          <img src="EDA_images/image-3.png" alt="EDA Image 7" class="eda-image">
-          <img src="EDA_images/crazy.png" alt="EDA Image 8" class="eda-image">
-      </div>
-  </section>
-    <div class="projects"></div>
-  </header>
+  <h3>Stacked Bar Chart: Operation Types by Age Group</h3>
+  <div id="stats"></div>
+  <div id = "chart"></div>
 </body>
 </html>
