@@ -184,6 +184,18 @@ function createStackedBar() {
         .attr('y', 9.5)
         .attr('dy', '0.32em')
         .text(d => d);
+    
+        // Add animation on load
+    bars.attr('y', height - margin.bottom)
+        .attr('height', 0)
+        .transition()
+        .duration(1000)
+        .attr('y', d => yScale(d[1]))
+        .attr('height', d => yScale(d[0]) - yScale(d[1]));
+
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+
 }
 
     
