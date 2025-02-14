@@ -231,6 +231,7 @@ h6 {
 #stats {
   display: flex;
   max-width: fit-content;
+  margin-top: 0px;
 }
 
 #stats dl {
@@ -245,8 +246,7 @@ h6 {
   grid-row: 1; /* Place all dt elements in the first row */
   text-align: left;
   font-size: larger;
-  font-weight: bold; /* Make titles bold */
-  color: cadetblue;
+  color: darkgrey;
 }
 
 #stats dd {
