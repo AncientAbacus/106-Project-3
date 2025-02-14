@@ -1,7 +1,7 @@
 html {
   --color-accent: oklch(90% 100% 180);
   --border-color: oklch(50% 10% 200 / 40%);
-  color-scheme: light dark
+  color-scheme: light
 }
 
 .color-scheme {
@@ -317,4 +317,18 @@ h6 {
 
 .bar:hover {
   cursor: pointer;
+}
+
+/* marching ants animation */
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8; /* 5 + 3 */
+  }
+}
+
+.marching-ants {
+  stroke: black;  /* Border color */
+  stroke-width: 3px;
+  stroke-dasharray: 4; /* Dashed border */
+  animation: marching-ants 2s linear infinite;
 }
