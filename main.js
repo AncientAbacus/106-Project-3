@@ -122,7 +122,7 @@ function createStackedBar(data) {
         .attr('height', d => yScale(d[0]) - yScale(d[1]))
         .attr('width', xScale.bandwidth())
         .attr('class', 'bar')
-        .style('fill-opacity', 0.85)
+        .style('fill-opacity', 1)
         .on('mouseenter', function(event, d) {
             const optype = d3.select(this.parentNode).datum().key;
         
@@ -143,7 +143,7 @@ function createStackedBar(data) {
                 .style('font-weight', 'bold');
         })
         .on('mouseleave', function() {
-            bars.style('fill-opacity', 0.85);
+            bars.style('fill-opacity', 1);
         
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
@@ -220,7 +220,7 @@ function createStackedBar(data) {
         d3.select(this).select('text').style('font-weight', 'bold');
     })
     .on('mouseleave', function() {
-        bars.style('fill-opacity', 0.85);
+        bars.style('fill-opacity', 1);
 
         // Remove marching ants effect
         d3.selectAll('.bar').classed('marching-ants', false);
@@ -266,7 +266,9 @@ function createNestedStackedBar(data) {
         .value((d, key) => d[1].filter(v => v.opname === key).length);
 
     const series = stack(ageBins);
-    
+
+
+
     // set up axes
     xScale = d3.scaleBand()
         .domain(ageBinKeys.reverse())
@@ -276,6 +278,27 @@ function createNestedStackedBar(data) {
     yScale = d3.scaleLinear()
         .domain([0, d3.max(series, s => d3.max(s, d => d[1]))])
         .range([height - margin.bottom, margin.top]);
+
+    
+    // create horizontal gridlines
+    const horizontalGridlines = svg
+    .append('g')
+    .attr('class', 'gridlines')
+    .attr('transform', `translate(${margin.left}, 0)`)
+    .style('opacity', 0.5);
+
+    // Create horizontal gridlines as an axis with no labels and full-width ticks
+    horizontalGridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-width + margin.left + margin.right));
+
+    // create vertical gridlines
+    const verticalGridlines = svg
+    .append('g')
+    .attr('class', 'gridlines')
+    .attr('transform', `translate(0, ${height - margin.bottom})`)
+    .style('opacity', 0.5);
+
+    // Create vertical gridlines as an axis with no labels and full-height ticks
+    verticalGridlines.call(d3.axisBottom(xScale).tickFormat('').tickSize(-height + margin.top + margin.bottom));
 
     const color = d3.scaleOrdinal()
         .domain(opnames)
@@ -295,7 +318,7 @@ function createNestedStackedBar(data) {
         .attr('height', d => yScale(d[0]) - yScale(d[1]))
         .attr('width', xScale.bandwidth())
         .attr('class', 'bar')
-        .style('fill-opacity', 0.85)
+        .style('fill-opacity', 1)
         .on('mouseenter', function(event, d) {
             const opname = d3.select(this.parentNode).datum().key;
         
@@ -316,7 +339,7 @@ function createNestedStackedBar(data) {
                 .style('font-weight', 'bold');
         })
         .on('mouseleave', function() {
-            bars.style('fill-opacity', 0.85);
+            bars.style('fill-opacity', 1);
         
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
@@ -379,7 +402,7 @@ function createNestedStackedBar(data) {
         d3.select(this).select('text').style('font-weight', 'bold');
     })
     .on('mouseleave', function() {
-        bars.style('fill-opacity', 0.85);
+        bars.style('fill-opacity', 1);
 
         // Remove marching ants effect
         d3.selectAll('.bar').classed('marching-ants', false);
