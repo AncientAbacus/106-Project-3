@@ -279,3 +279,7 @@ h6 {
   stroke-dasharray: 4; /* Dashed border */
   animation: marching-ants 2s linear infinite;
 }
+
+.legend-text {
+  cursor: pointer;
+}
