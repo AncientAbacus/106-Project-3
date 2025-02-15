@@ -289,17 +289,6 @@ function createNestedStackedBar(data) {
 
     // Create horizontal gridlines as an axis with no labels and full-width ticks
     horizontalGridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-width + margin.left + margin.right));
-
-    // create vertical gridlines
-    const verticalGridlines = svg
-    .append('g')
-    .attr('class', 'gridlines')
-    .attr('transform', `translate(0, ${height - margin.bottom})`)
-    .style('opacity', 0.5);
-
-    // Create vertical gridlines as an axis with no labels and full-height ticks
-    verticalGridlines.call(d3.axisBottom(xScale).tickFormat('').tickSize(-height + margin.top + margin.bottom));
-
     const color = d3.scaleOrdinal()
         .domain(opnames)
         .range(colorScale.range());
