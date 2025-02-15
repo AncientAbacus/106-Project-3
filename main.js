@@ -58,7 +58,11 @@ function displayStats() {
 
     // Add total cases by age bin
     const ageBins = d3.group(data, d => d.agebin);
-    const sortedAgeBins = Array.from(ageBins).sort((a, b) => d3.ascending(Number(a[0].split('-')[0]), Number(b[0].split('-')[0])));
+    const sortedAgeBins = Array.from(ageBins).sort((a, b) => {
+        const aStart = a[0] === "70+" ? 70 : Number(a[0].split('-')[0]);
+        const bStart = b[0] === "70+" ? 70 : Number(b[0].split('-')[0]);
+        return d3.ascending(aStart, bStart);
+    });
     sortedAgeBins.forEach(([key, value]) => {
         dl.append('dt').text(`${key}`);
         dl.append('dd').text(value.length);
@@ -249,7 +253,11 @@ function createNestedStackedBar(data) {
         .style('overflow', 'visible');
 
     const ageBins = d3.group(data, d => d.agebin);
-    const ageBinKeys = Array.from(ageBins.keys()).sort((a, b) => d3.descending(Number(a.split('-')[0]), Number(b.split('-')[0])));
+    const ageBinKeys = Array.from(ageBins.keys()).sort((a, b) => {
+        const aStart = a === "70+" ? 70 : Number(a.split('-')[0]);
+        const bStart = b === "70+" ? 70 : Number(b.split('-')[0]);
+        return d3.descending(aStart, bStart);
+    });
 
     const opnames = Array.from(new Set(data.map(d => d.opname))).sort(d3.ascending).reverse();
 
