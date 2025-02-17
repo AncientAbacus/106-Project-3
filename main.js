@@ -22,6 +22,11 @@ const colorScale = d3.scaleOrdinal()
     .domain(d3.range(customColors.length)) // Assigns colors to categories
     .range(customColors.reverse()); // reverse because otherwise the x axis displays backwards
 
+// Add this before your visualization code
+const tooltip = d3.select('body')
+    .append('div')
+    .attr('class', 'tooltip');
+
 // load data-----------------------------------------------------------------------------------------
 async function loadData() {
     data = await d3.csv('data/viz_cases.csv', (row) => ({
@@ -69,6 +74,28 @@ function displayStats() {
     });
 }
 
+
+// update stats for nested stacked bar chart -------------------------------------------------------
+function updateStats(filteredData) {  
+    // Create the dl element
+    const dl = d3.select('#stats').append('dl').attr('class', 'stats');
+
+    // add total observations
+    dl.append('dt').html('Total');
+    dl.append('dd').text(filteredData.length);
+
+    // Add total cases by age bin
+    const ageBins = d3.group(filteredData, d => d.agebin);
+    const sortedAgeBins = Array.from(ageBins).sort((a, b) => {
+        const aStart = a[0] === "70+" ? 70 : Number(a[0].split('-')[0]);
+        const bStart = b[0] === "70+" ? 70 : Number(b[0].split('-')[0]);
+        return d3.ascending(aStart, bStart);
+    });
+    sortedAgeBins.forEach(([key, value]) => {
+        dl.append('dt').text(`${key}`);
+        dl.append('dd').text(value.length);
+    });
+}
 // create stacked bar --------------------------------------------------------------------------------
 function createStackedBar(data) {
     const width = 1000;
@@ -125,11 +152,20 @@ function createStackedBar(data) {
         .style('fill-opacity', 1)
         .on('mouseenter', function(event, d) {
             const optype = d3.select(this.parentNode).datum().key;
+            
+            tooltip.style('opacity', 1)
+            .html(`
+                Operation: ${optype}<br/>
+                Percentage: ${((d[1] - d[0]) * 100).toFixed(1)}%<br/>
+                Total Cases: ${Math.round((d[1] - d[0]) * d.data[1].length)} 
+            `)
+            .style('left', (event.pageX + 10) + 'px')
+            .style('top', (event.pageY - 28) + 'px');
         
-            bars.style('fill-opacity', function(d) {
-                return d3.select(this.parentNode).datum().key === optype ? 1 : 0.3;
-            });
-        
+        bars.style('fill-opacity', function(d) {
+            return d3.select(this.parentNode).datum().key === optype ? 1 : 0.3;
+        });
+
             // Add marching ants effect to highlighted bars
             d3.selectAll('.bar')
                 .filter(function(d) {
@@ -142,9 +178,16 @@ function createStackedBar(data) {
                 .select('text')
                 .style('font-weight', 'bold');
         })
+        .on('mousemove', function(event) {
+            tooltip.style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+        })
         .on('mouseleave', function() {
+            // Hide tooltip
+            tooltip.style('opacity', 0);
+            
             bars.style('fill-opacity', 1);
-        
+            
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
 
@@ -155,6 +198,7 @@ function createStackedBar(data) {
             console.log("Circle clicked!", d); // Log the data bound to the circle
             d3.select(this) // Select the clicked circle
               .attr("fill", "red"); // Change its fill color to red;
+            d3.select('#stats').html('');
 
             // Filter data to include only the selected optype
             const filteredData = data.filter(d => d.optype === d3.select(this.parentNode).datum().key);
@@ -164,6 +208,7 @@ function createStackedBar(data) {
 
             // Create a new chart with the filtered data
             createNestedStackedBar(filteredData);
+            updateStats(filteredData);
             });
 
     // draw axes
@@ -310,11 +355,34 @@ function createNestedStackedBar(data) {
         .style('fill-opacity', 1)
         .on('mouseenter', function(event, d) {
             const opname = d3.select(this.parentNode).datum().key;
-        
+            
+            // Show tooltip
+            tooltip.style('opacity', 1)
+                .html(`
+                    Operation: ${opname}<br/>
+                    Value: ${d[1] - d[0]}<br/>
+                    Total: ${d[1]}
+                `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+
             bars.style('fill-opacity', function(d) {
                 return d3.select(this.parentNode).datum().key === opname ? 1 : 0.3;
             });
-        
+
+            tooltip.style('opacity', 1)
+                .html(`
+                    Operation: ${opname}<br/>
+                    Percentage: ${(((d[1] - d[0])/d.data[1].length) * 100).toFixed(1)}%<br/>
+                    Total Cases: ${(d[1] - d[0])} 
+                `)
+                .style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+
+            bars.style('fill-opacity', function(d) {
+                return d3.select(this.parentNode).datum().key === opname ? 1 : 0.3;
+            });
+
             // Add marching ants effect to highlighted bars
             d3.selectAll('.bar')
                 .filter(function(d) {
@@ -327,9 +395,16 @@ function createNestedStackedBar(data) {
                 .select('text')
                 .style('font-weight', 'bold');
         })
+        .on('mousemove', function(event) {
+            tooltip.style('left', (event.pageX + 10) + 'px')
+                .style('top', (event.pageY - 28) + 'px');
+        })
         .on('mouseleave', function() {
+            // Hide tooltip
+            tooltip.style('opacity', 0);
+            
             bars.style('fill-opacity', 1);
-        
+            
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
 
@@ -432,4 +507,13 @@ function createNestedStackedBar(data) {
             // Clear the existing chart
             location.reload();
         });
+    // Add after y-axis creation in createNestedStackedBar function
+    svg.append('text')
+    .attr('transform', 'rotate(-90)')
+    .attr('y', margin.left - 60)
+    .attr('x', -(height/2))
+    .attr('text-anchor', 'middle')
+    .attr('font-family', 'Franklin')
+    .attr('font-size', '14px')
+    .text('Number of Cases');
 }
