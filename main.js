@@ -275,6 +275,27 @@ function createStackedBar(data) {
 
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
+
+    // Add x-axis label
+    svg.append('text')
+        .attr('x', width / 2)  // Center horizontally
+        .attr('y', margin.bottom + 565)  // Position below x-axis
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '17px')
+        .attr('fill', 'grey')  // Set text color to grey
+        .style('font-weight', 'bold')  // Make text bold
+        .text('Age Groups');
+
+    // Add y-axis label
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')  // Rotate for vertical text
+        .attr('y', margin.left - 55)  // Position left of y-axis
+        .attr('x', -(height / 2))  // Center vertically
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '17px')
+        .attr('fill', 'grey')  // Set text color to grey
+        .style('font-weight', 'bold')  // Make text bold
+        .text('Number of Cases');
 }
 
 function initialNestedStackedBar(data, operation) {
@@ -573,12 +594,25 @@ function createNestedStackedBar(data) {
             // Clear the existing chart
             location.reload();
         });
-    // Add after y-axis creation in createNestedStackedBar function
+    // Add x-axis label
     svg.append('text')
-        .attr('transform', 'rotate(-90)')
-        .attr('y', margin.left - 60)
-        .attr('x', -(height/2))
+        .attr('x', width / 2)  // Center horizontally
+        .attr('y', margin.bottom + 565)  // Position below x-axis
         .attr('text-anchor', 'middle')
-        .attr('font-size', '14px')
+        .attr('font-size', '17px')
+        .attr('fill', 'grey')  // Set text color to grey
+        .style('font-weight', 'bold')  // Make text bold
+        .text('Age Groups');
+
+    // Add y-axis label
+    svg.append('text')
+        .attr('transform', 'rotate(-90)')  // Rotate for vertical text
+        .attr('y', margin.left - 50)  // Position left of y-axis
+        .attr('x', -(height / 2))  // Center vertically
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '17px')
+        .attr('fill', 'grey')  // Set text color to grey
+        .style('font-weight', 'bold')  // Make text bold
         .text('Number of Cases');
+
 }
