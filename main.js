@@ -202,12 +202,13 @@ function createStackedBar(data) {
 
             // Filter data to include only the selected optype
             const filteredData = data.filter(d => d.optype === d3.select(this.parentNode).datum().key);
+            const selectedOptype = d3.select(this.parentNode).datum().key;
 
             // Clear the existing chart
             d3.select('#chart').selectAll('*').remove();
 
             // Create a new chart with the filtered data
-            createNestedStackedBar(filteredData);
+            initialNestedStackedBar(filteredData, selectedOptype);
             updateStats(filteredData);
             });
 
@@ -286,6 +287,66 @@ function createStackedBar(data) {
         .attr("transform", "translate(0," + height + ")")
 }
 
+function initialNestedStackedBar(data, operation) {
+    const width = 1000;
+    const height = 600;
+    const margin = { top: 60, right: 30, bottom: 40, left: 40 };
+
+    // Clear previous content
+    d3.select('#chart').html('');
+
+    d3.select('#chart')
+        .insert('h3', ':first-child')
+        .attr('class', 'nested-title')
+        .style('text-align', 'center')
+        .style('font-family', 'Arial')
+        .style('margin-bottom', '10px')
+        .style('font-size', '18px')
+        .text(`Operation: ${operation}`);
+
+    // Add search bar above chart
+    const searchContainer = d3.select('#chart')
+        .insert('div', ':first-child')
+        .attr('class', 'search-container')
+        .style('margin-bottom', '10px');
+
+    searchContainer.append('label')
+        .attr('for', 'search')
+        .text(`Specify Operation: `)
+        .style('margin-right', '5px');
+
+    const searchInput = searchContainer.append('input')
+        .attr('type', 'text')
+        .attr('id', 'search')
+        .attr('placeholder', 'Type to filter...')
+        .style('padding', '5px')
+        .style('border', '1px solid #ccc')
+        .style('border-radius', '5px')
+        .style('width', '200px');
+
+    // Filter function
+    function filterData(query) {
+        query = query.toLowerCase();
+        return data.filter(d => d.opname.toLowerCase().includes(query));
+    }
+
+    // Function to redraw chart
+    function updateChart(filteredData) {
+        d3.select('#chart').selectAll('svg').remove(); // Clear chart
+        createNestedStackedBar(filteredData);
+    }
+
+    // Attach event listener for search
+    searchInput.on('input', function () {
+        const query = this.value;
+        const filteredData = filterData(query);
+        updateChart(filteredData);
+    });
+
+    // Draw initial chart
+    createNestedStackedBar(data);
+}
+
 function createNestedStackedBar(data) {
     const width = 1000;
     const height = 600;
@@ -311,8 +372,6 @@ function createNestedStackedBar(data) {
         .value((d, key) => d[1].filter(v => v.opname === key).length);
 
     const series = stack(ageBins);
-
-
 
     // set up axes
     xScale = d3.scaleBand()
@@ -426,30 +485,41 @@ function createNestedStackedBar(data) {
         .style('font-family', 'Franklin');
 
     // draw legend
-    const legend = svg.append('g')
-        .attr('transform', `translate(${width - margin.right + 20},${margin.top})`)
-        .selectAll('g')
-        .data(opnames.reverse()) // Reverse again for legend to match the bars
-        .join('g')
-        .attr('transform', (d, i) => `translate(0,${i * 20})`)
-        ;   
+// Create a group for the legend container
+    const legendContainer = svg.append('foreignObject')
+        .attr('x', width - margin.right + 0) // Keep it positioned outside the chart
+        .attr('y', margin.top)
+        .attr('width', 300) // Fixed width for the legend
+        .attr('height', height - margin.top - margin.bottom) // Match the chart height
+        .append('xhtml:div')
+        .style('width', '100%')
+        .style('height', '100%')
+        .style('overflow-y', 'auto') // Enable scrolling when necessary
 
-    legend.append('rect')
-        .attr('class', 'legend-rect')
-        .attr('x', -25)
-        .attr('width', 19)
-        .attr('height', 19)
-        .attr('fill', color)
-        .style('rx', '25%');
+    // Append legend items inside the scrollable container
+    const legend = legendContainer.append('div')
+        .selectAll('div')
+        .data(opnames.reverse()) // Reverse to match the bars
+        .join('div')
+        .style('display', 'flex')
+        .style('align-items', 'center');
 
-    legend.append('text')
-        .attr('x', 0)
-        .attr('y', 9.5)
-        .attr('dy', '0.32em')
+    // Add colored rectangles for legend
+    legend.append('div')
+        .style('width', '19px')
+        .style('height', '19px')
+        .style('background-color', d => color(d))
+        .style('border-radius', '25%') // Match the rounded corners of your original style
+        .style('margin-right', '5px');
+
+    // Add legend text
+    legend.append('span')
         .text(d => d)
-        .attr('class','legend-text');
+        .style('cursor', 'pointer')
+        .style('white-space', 'normal')
+        .style('max-width', '130px');
 
-    // Add hover interaction to legend items
+    // Add hover interaction (preserving your logic)
     legend.on('mouseenter', function(event, d) {
         bars.style('fill-opacity', function(barData) {
             return d3.select(this.parentNode).datum().key === d ? 1 : 0.3;
@@ -463,7 +533,7 @@ function createNestedStackedBar(data) {
             .classed('marching-ants', true);
 
         // Bold the corresponding legend item
-        d3.select(this).select('text').style('font-weight', 'bold');
+        d3.select(this).select('span').style('font-weight', 'bold');
     })
     .on('mouseleave', function() {
         bars.style('fill-opacity', 1);
@@ -472,7 +542,7 @@ function createNestedStackedBar(data) {
         d3.selectAll('.bar').classed('marching-ants', false);
 
         // Remove bold from all legend items
-        legend.select('text').style('font-weight', null);
+        legend.select('span').style('font-weight', null);
     });
     
     // Add animation on load

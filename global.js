@@ -1,7 +1,6 @@
 
 let pages = [
     { url: '', title: 'Home' },
-    { url: 'meta/', title: 'Meta' },
   ];
   
   //are we on the home page?

@@ -117,18 +117,6 @@ h6 {
   font-size: 100%;
 }
 
-.project-image {
-  width: 300px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-}
-
-#projects-pie-plot {
-  max-width: 20em;
-  margin-block: 2em;
-
-  overflow: visible;
-}
-
 .container {
   display: flex; /* Aligns pie chart and legend side by side */
   align-items: center; /* Vertically centers items */
@@ -191,8 +179,6 @@ h6 {
   }
 }
 
-
-
 .selected {
   --color: oklch(60% 45% 0) !important;
 
@@ -208,25 +194,6 @@ h6 {
     fill: var(--color);
   }
 }
-
-.eda-container {
-  text-align: center;
-  margin-top: 20px;
-}
-.eda-images {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-.eda-image {
-  width: 300px; /* Adjust size */
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
-}
-
 
 #stats {
   display: flex;
@@ -294,4 +261,12 @@ h6 {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
+}
+
+p.hook {
+  font-size: 0.9em;  /* Makes the text smaller */
+  color: gray;       /* Sets text color to gray */
+  font-weight: normal; /* Keeps text at normal weight */
+  line-height: 1.4;  /* Improves readability */
+  max-width: 700px;  /* Prevents excessively wide text */
 }
