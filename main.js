@@ -4,24 +4,10 @@ let commits = [];
 let xScale, yScale;
 
 // create custom color scale
-const customColors = [
-    "#E63946", // Strong Red
-    "#F4A261", // Orange
-    "#2A9D8F", // Teal
-    "#264653", // Deep Navy
-    "#E9C46A", // Yellow Gold
-    "#A23E48", // Dark Red
-    "#457B9D", // Blue
-    "#1D3557", // Dark Blue
-    "#6A0572", // Purple
-    "#FFB400", // Bright Yellow
-    "#4ECDC4"  // Light Cyan
-];
-
+const customColors = d3.schemePaired;
 const colorScale = d3.scaleOrdinal()
     .domain(d3.range(customColors.length)) // Assigns colors to categories
     .range(customColors.reverse()); // reverse because otherwise the x axis displays backwards
-
 // Add this before your visualization code
 const tooltip = d3.select('body')
     .append('div')
@@ -217,13 +203,17 @@ function createStackedBar(data) {
         .attr('transform', `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(xScale))
         .selectAll('text')
-        .style('font-family', 'Franklin');
+        .style('font-size', '17px')
+        //.style('font-weight', '700')
+        .style('fill', 'gray');
 
     svg.append('g')
         .attr('transform', `translate(${margin.left},0)`)
         .call(d3.axisLeft(yScale).tickFormat(d3.format('.0%')))
         .selectAll('text')
-        .style('font-family', 'Franklin');
+        .style('font-size', '17px')
+        //.style('font-weight', '700')
+        .style('fill', 'gray');
 
     // draw legend
     const legend = svg.append('g')
@@ -231,19 +221,19 @@ function createStackedBar(data) {
         .selectAll('g')
         .data(optypes.reverse()) // Reverse again for legend to match the bars
         .join('g')
-        .attr('transform', (d, i) => `translate(0,${i * 20})`)
-        ;
+        .attr('transform', (d, i) => `translate(0,${i * 30})`); // Increased from 20 to 30 for more spacing
 
     legend.append('rect')
         .attr('class', 'legend-rect')
-        .attr('x', -25)
+        .attr('x', +5)
         .attr('width', 19)
         .attr('height', 19)
         .attr('fill', color)
-        .style('rx', '25%');
-
+        .attr('rx', 5)  // Soft square rounding (adjust as needed)
+        .attr('ry', 5); // Matches horizontal rounding
+    
     legend.append('text')
-        .attr('x', 0)
+        .attr('x', 30)
         .attr('y', 9.5)
         .attr('dy', '0.32em')
         .text(d => d)
@@ -476,13 +466,18 @@ function createNestedStackedBar(data) {
         .attr('transform', `translate(0,${height - margin.bottom})`)
         .call(d3.axisBottom(xScale))
         .selectAll('text')
-        .style('font-family', 'Franklin');
+        .style('font-size', '17px')
+        //.style('font-weight', '700')
+        .style('fill', 'gray');
+        
 
     svg.append('g')
         .attr('transform', `translate(${margin.left},0)`)
         .call(d3.axisLeft(yScale))
         .selectAll('text')
-        .style('font-family', 'Franklin');
+        .style('font-size', '17px')
+        //.style('font-weight', '700')
+        .style('fill', 'gray');
 
     // draw legend
 // Create a group for the legend container
@@ -516,6 +511,7 @@ function createNestedStackedBar(data) {
     legend.append('span')
         .text(d => d)
         .style('cursor', 'pointer')
+        .style('font-size', '14px')
         .style('white-space', 'normal')
         .style('max-width', '130px');
 
@@ -579,11 +575,10 @@ function createNestedStackedBar(data) {
         });
     // Add after y-axis creation in createNestedStackedBar function
     svg.append('text')
-    .attr('transform', 'rotate(-90)')
-    .attr('y', margin.left - 60)
-    .attr('x', -(height/2))
-    .attr('text-anchor', 'middle')
-    .attr('font-family', 'Franklin')
-    .attr('font-size', '14px')
-    .text('Number of Cases');
+        .attr('transform', 'rotate(-90)')
+        .attr('y', margin.left - 60)
+        .attr('x', -(height/2))
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '14px')
+        .text('Number of Cases');
 }
