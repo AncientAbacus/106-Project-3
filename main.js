@@ -142,15 +142,16 @@ function createStackedBar(data) {
             tooltip.style('opacity', 1)
             .html(`
                 Operation: ${optype}<br/>
+                Age Group: ${d.data[0]}<br/>
                 Percentage: ${((d[1] - d[0]) * 100).toFixed(1)}%<br/>
                 Total Cases: ${Math.round((d[1] - d[0]) * d.data[1].length)} 
             `)
             .style('left', (event.pageX + 10) + 'px')
             .style('top', (event.pageY - 28) + 'px');
         
-        bars.style('fill-opacity', function(d) {
-            return d3.select(this.parentNode).datum().key === optype ? 1 : 0.3;
-        });
+            bars.style('fill-opacity', function(d) {
+                return d3.select(this.parentNode).datum().key === optype ? 1 : 0.3;
+            });
 
             // Add marching ants effect to highlighted bars
             d3.selectAll('.bar')
@@ -158,6 +159,9 @@ function createStackedBar(data) {
                     return d3.select(this.parentNode).datum().key === optype;
                 })
                 .classed('marching-ants', true);
+
+            // Add selected-ants effect to the specific bar being hovered over
+            d3.select(this).classed('selected-ants', true);
 
             // Bold the corresponding legend item
             legend.filter(l => l === optype)
@@ -176,6 +180,9 @@ function createStackedBar(data) {
             
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
+
+            // Remove selected-ants effect
+            d3.selectAll('.bar').classed('selected-ants', false);
 
             // Remove bold from all legend items
             legend.select('text').style('font-weight', null);
@@ -196,7 +203,7 @@ function createStackedBar(data) {
             // Create a new chart with the filtered data
             initialNestedStackedBar(filteredData, selectedOptype);
             updateStats(filteredData);
-            });
+        });
 
     // draw axes
     svg.append('g')
@@ -430,8 +437,9 @@ function createNestedStackedBar(data) {
             tooltip.style('opacity', 1)
                 .html(`
                     Operation: ${opname}<br/>
+                    Age Group: ${d.data[0]}<br/>
                     Value: ${d[1] - d[0]}<br/>
-                    Total: ${d[1]}
+                    Total: ${d.data[1].length}
                 `)
                 .style('left', (event.pageX + 10) + 'px')
                 .style('top', (event.pageY - 28) + 'px');
@@ -443,6 +451,7 @@ function createNestedStackedBar(data) {
             tooltip.style('opacity', 1)
                 .html(`
                     Operation: ${opname}<br/>
+                    Age Group: ${d.data[0]}<br/>
                     Percentage: ${(((d[1] - d[0])/d.data[1].length) * 100).toFixed(1)}%<br/>
                     Total Cases: ${(d[1] - d[0])} 
                 `)
@@ -459,6 +468,9 @@ function createNestedStackedBar(data) {
                     return d3.select(this.parentNode).datum().key === opname;
                 })
                 .classed('marching-ants', true);
+            
+            // Add selected-ants effect to the specific bar being hovered over
+            d3.select(this).classed('selected-ants', true);
 
             // Bold the corresponding legend item
             legend.filter(l => l === opname)
@@ -477,6 +489,9 @@ function createNestedStackedBar(data) {
             
             // Remove marching ants effect
             d3.selectAll('.bar').classed('marching-ants', false);
+            
+            // Remove selected-ants effect
+            d3.selectAll('.bar').classed('selected-ants', false);
 
             // Remove bold from all legend items
             legend.select('text').style('font-weight', null);

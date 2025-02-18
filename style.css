@@ -247,6 +247,13 @@ h6 {
   animation: marching-ants 2s linear infinite;
 }
 
+.marching-ants.selected-ants {
+  stroke: black;  /* Border color */
+  stroke-width: 3px;
+  stroke-dasharray: none; /* Makes the stroke a solid line */
+  animation: none;
+}
+
 .legend-text {
   cursor: pointer;
 }
