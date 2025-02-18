@@ -17,5 +17,46 @@
   <p class="hook">Explore the data, click to uncover deeper insights, and see how medical intervention changes as we age.</p>
   <div id="stats"></div>
   <div id = "chart"></div>
+  <h2>Development</h2>
+  <h3>Stacked Barplots and Basic Interaction (Eddie, 4 Hours)</h3>
+  <p>
+    After exploring our data, our primary goal was to determine which operations are most common among different age groups. To achieve this, we wanted a plot that visualized the relative share of each operation type on the y-axis and the age groups themselves on the x-axis, leading us to choose a stacked density barplot as the best way to display that information clearly and succinctly. An alternative I investigated was utilizing a stacked streamgraph for the same reason, but we chose to go for the barplot because it more clearly showcased the distinct patterns per age group compared to a more continuous streamgraph that made these distinctions less obvious. In our completed plot, the share of each operation type per each age group is displayed as a stack item with each operation type denoted by a different color (our color palette is a default paired scheme offered by D3 to maximize visual differentiation and accessibility). 
+  </p>
+  <p>
+    I also implemented two interactive features. First, I integrated interactability to highlight all corresponding bars of a shared operation-type with a marching ants border and higher opacity to showcase trend evolutions cross age-groups. Then, I also integrated the ability to open a nested barplot to explore the frequency of specific operations within an operation type across age-groups (triggered when any bar is clicked of any operation type). Implementing these features were the most time-consuming elements, especially figuring out how to select all bars of a corresponding type. 
+  </p>
+  <p>
+    Finally, the stats bar above the bar plot is customized for the selected operation type, displaying the total number of operations within this category as well as the number of operations across each age group. This auto-adjusts when a nested barplot is opened, reporting an updated operation count for each operation type. 
+  </p>
+  <h3>Nested Barplot and Additional Interaction</h3>
+  <p>
+    For this barplot, we wanted a breakdown of the specific operations that are the most common per age group, so, unlike the main barplot, we display each nested barplot as non-density. To aid comparison between age groups, I added horizontal gridlines to the plot background.
+  </p>
+  <p>
+    In addition, both barplots make use of an interactive legend that, when hovered over, also selects operation types/operations in the same manner as hovering over the bars themselves to make it easier to locate specific operation types/operations. 
+    I also added an animation that showcases the bars stretching into position when the plot is first rendered because I felt it looked nice. 
+  </p>
+    
+  <h3>Tooltips (Tony, 2.5 Hours)</h3>
+  <p>
+    Our preliminary design features a highlighting function that emphasizes bars of the same category when a "mouseenter" event is detected, helping readers observe distribution trends across age groups. While this aids qualitative interpretation, I wanted to enhance the plot by providing quantitative statistics that aren't directly visible. To achieve this, I introduced a tooltip feature.
+  </p>
+  <p>
+    Since our bar plots are stacked, estimating the exact percentage of a specific operation can be difficult. The tooltip addresses this by displaying both the percentage and the number of cases for the selected operation within each age group. This functionality is also applied to the nested bar plot, where the y-axis represents the number of cases per operation. Initially, the statistics bar for the nested bar plot presented the same data as the operation-type stacked bar plot. To improve clarity, I modified the nested bar plot so that it only displays the number of operations for the corresponding operation type.
+  </p>
+  <p>
+    For tooltip design, my initial approach was to match the tooltip background color with the selected bar. However, this resulted in an inconsistent and visually cluttered appearance. To create a cleaner and more organized look, I finalized the tooltip design with an opaque black background and white text, ensuring clarity and readability.
+  </p>
+
+  <h3>Search Functionality (Gino, 3 hours)</h3>
+  <p>
+    At this point, our visualization just needed some cleaning up. When filtering by operation, the user is left with a large list of specific operation types, with some falling off the page. This made the visualization extremely hard to navigate if the user was looking for specific operation types. In order to solve this problem, I added a search bar to the legend once the bar plot was filtered. Following inspiration from Lab 5 and 6, I decided to make the search bar update the bar plot live. 
+  </p>
+  <p>
+    I also fixed the problem with legend items extending over the page by adding text wrapping and making it a scrollable element. I initially wanted the legend to be scrollable horizontally too, but this made the legend a bit too unwieldy and hard to navigate. For every time the initial bar chart is filtered by an operation, I added a subtitle that clarifies which operation the user had selected. This reminds them they are in a sub bar chart and are then specifying the actual type of the operation.
+  </p>
+  <p>
+    Once I made sure the bar chart was visible at every interaction possible, I added the title and flavor text. I made sure to have an intriguing hook and clear question for the bar chart to answer.
+  </p>
 </body>
 </html>

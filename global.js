@@ -1,6 +1,6 @@
 
 let pages = [
-    { url: '', title: 'Home' },
+    
   ];
   
   //are we on the home page?
