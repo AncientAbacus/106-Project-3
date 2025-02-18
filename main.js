@@ -289,13 +289,13 @@ function createStackedBar(data) {
     // Add y-axis label
     svg.append('text')
         .attr('transform', 'rotate(-90)')  // Rotate for vertical text
-        .attr('y', margin.left - 55)  // Position left of y-axis
+        .attr('y', margin.left - 65)  // Position left of y-axis
         .attr('x', -(height / 2))  // Center vertically
         .attr('text-anchor', 'middle')
         .attr('font-size', '17px')
         .attr('fill', 'grey')  // Set text color to grey
         .style('font-weight', 'bold')  // Make text bold
-        .text('Number of Cases');
+        .text('Percentage of Cases');
 }
 
 function initialNestedStackedBar(data, operation) {
